@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id "maven-publish"
+}
+
+group 'org.example'
+version '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal ( )
+}
+
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task formatMyOutput {
+    doFirst {
+        println 'format the output'
+        File fileout = new File('.','response.txt')
+        def jsonBigResponse = """
+{ "stuffDontcareAbout" : "throw away"
+    "stuffdoCareAbout" : {
+    "color" : "red"
+   ,"size"  : "large" 
+}
+"""
+        fileout << jsonBigResponse;
+
+    }
+}
+
+def theArtifact = new File('response.txt')
+
+publishing {
+    publications{
+        maven(MavenPublication){
+            artifact theArtifact
+            artifactId 'version'
+        }
+    }
+}
+
